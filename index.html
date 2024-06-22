@@ -22,7 +22,7 @@
       <h1>Upload file</h1>
       <form action="submit" class="initial-file">
         <label for="upload-file" class="drop-container" id="dropcontainer">
-          <span class="drop-title">Drop files here</span>
+          <span id="drop-indicator" class="drop-title">Drop files here</span>
           or
           <input type="file" id="upload-file" accept="upload-file/*" required>
         </label>
@@ -56,9 +56,16 @@
   </main>
   <script>
     let is_file_selected = false;
+    const inputElement = document.getElementById('upload-file');
+    
+    document.getElementById('page-1').addEventListener('drop', (e) => {
+      e.preventDefault();
+      is_file_selected = true;
+    });
 
-    document.getElementById('upload-file').addEventListener('change', function() {
-      if (document.getElementById('upload-file').files.length > 0) {
+    inputElement.addEventListener('change', function() {
+      alert(inputElement.files.length);
+      if (inputElement.files.length > 0) {
         is_file_selected = true;
       } else {
         is_file_selected = false;
