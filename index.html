@@ -1,0 +1,139 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWP</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+<body>
+  <header>
+    <div class="progress-bar">
+      <div class="circle" onclick="choosePage(1)">1</div>
+      <div class="circle" onclick="choosePage(2)">2</div>
+      <div class="circle" onclick="choosePage(3)">3</div>
+      <div class="circle" onclick="choosePage(4)">4</div>
+  </div>
+  </header>
+  <main>
+    <div class="page" id="page-1">
+      <h1>Upload file</h1>
+      <form action="submit" class="initial-file">
+        <label for="upload-file" class="drop-container" id="dropcontainer">
+          <span class="drop-title">Drop files here</span>
+          or
+          <input type="file" id="upload-file" accept="upload-file/*" required>
+        </label>
+        <div class="buttons">
+          <button type="button" class="btn" onclick="downloadFile()">Sample file</button>
+          <button type="button" class="btn attention" onclick="runDemo()">Save</button>
+          <!-- <button class="btn attention">Save</button> -->
+        </div>
+      </form>
+    </div>
+    <!-- <div class="page" id="page-loading">
+      <div class="green-filter">
+        <img class="loading" src="loading.gif" alt="Loading...">
+      </div>
+    </div> -->
+    <div class="page" id="page-2">
+      <div class="green-filter">
+        <img class="loading" src="loading.gif" alt="Loading...">
+      </div>
+    </div>
+    <div class="page" id="page-3">
+      <h1>Distribution is completed!</h1>
+      <div class="okey">
+        <img src="success.svg" alt="Success">
+      </div>
+      <button type="button" class="btn attention" onclick="downloadResultFile()">Download as .xls</button>
+    </div>
+    <div class="page" id="page-4">
+
+    </div>
+  </main>
+  <script>
+    let is_file_selected = false;
+
+    document.getElementById('upload-file').addEventListener('change', function() {
+      if (document.getElementById('upload-file').files.length > 0) {
+        is_file_selected = true;
+      } else {
+        is_file_selected = false;
+      }
+    });
+    function runDemo() {
+      if (!is_file_selected) {
+        return;
+      }
+      // choosePage('loading');
+      choosePage(2);
+      setTimeout(() => {
+        choosePage(3);
+      }, 4000);
+    }
+  </script>
+  <script>
+    function downloadFile() {
+      const link = document.createElement('a');
+      link.href = 'Sample file.txt';
+      link.download = 'Sample file.txt';
+      link.click();
+    }
+    function downloadResultFile() {
+      const link = document.createElement('a');
+      link.href = 'Result.txt';
+      link.download = 'Result.txt';
+      link.click();
+    }
+  </script>
+  <script>
+    choosePage(3);
+    function choosePage(page) {
+      let pages = document.querySelectorAll(".page");
+      for (let i = 0; i < pages.length; i++) {
+        pages[i].style.display = "none";
+      }
+      document.getElementById("page-" + page).style.display = 'flex';
+
+
+      if (Number.isInteger(page)) {
+        const circles = document.querySelectorAll('.circle');
+        
+        circles.forEach((circle, index) => {
+          if (index < page) {
+            circle.classList.add('active');
+          } else {
+            circle.classList.remove('active');
+          }
+        });
+      }
+    }
+  </script>
+  <script>
+    const dropContainer = document.getElementById("dropcontainer")
+    const fileInput = document.getElementById("upload-file")
+
+    dropContainer.addEventListener("dragover", (e) => {
+      // prevent default to allow drop
+      e.preventDefault()
+    }, false)
+
+    dropContainer.addEventListener("dragenter", () => {
+      dropContainer.classList.add("drag-active")
+    })
+
+    dropContainer.addEventListener("dragleave", () => {
+      dropContainer.classList.remove("drag-active")
+    })
+
+    dropContainer.addEventListener("drop", (e) => {
+      e.preventDefault()
+      dropContainer.classList.remove("drag-active")
+      fileInput.files = e.dataTransfer.files
+    })
+  </script>
+</body>
+</html>
